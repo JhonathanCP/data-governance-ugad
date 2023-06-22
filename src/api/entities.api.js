@@ -7,19 +7,19 @@ const URL =
 
 console.log(URL);
 const entitiesApi = axios.create({
-  baseURL: `${URL}/api/entities`,
+  baseURL: `${URL}/api`,
 });
 
-export const getEntities = () => entitiesApi.get("/");
+export const getEntities = () => entitiesApi.get("/entities/");
 
-export const getEntity = (id) => entitiesApi.get(`/${id}/`);
+export const getEntity = (id) => entitiesApi.get(`/entities/${id}/`);
 
-export const createEntity = (entity) => entitiesApi.post("/", entity);
+export const createEntity = (entity) => entitiesApi.post("/entities/", entity);
 
-export const updateEntity = (id, entity) => entitiesApi.put(`/${id}/` , entity);
+export const updateEntity = (id, entity) => entitiesApi.put(`/entities/${id}/` , entity);
 
-export const deleteEntity = (id) => entitiesApi.delete(`/${id}/`);
+export const deleteEntity = (id) => entitiesApi.delete(`/entities/${id}/`);
 
-export const getTableInfo = () => entitiesApi.get("/table-info/");
+export const getTableInfo = (id) => entitiesApi.get(`/table-info/${id}/`);
 
-export const getColumnInfo = () => entitiesApi.get("/column-info/");
+export const getColumnInfo = (id) => entitiesApi.get(`/column-info/${id}/`);

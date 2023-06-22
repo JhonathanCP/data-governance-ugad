@@ -4,6 +4,9 @@ import { EntityTypeFormPage } from "./pages/EntityTypeFormPage";
 import { EntityTypePage } from "./pages/EntityTypePage";
 import { EntityFormPage } from "./pages/EntityFormPage";
 import { EntityPage } from "./pages/EntityPage";
+import { ColumnPage } from "./pages/ColumnPage";
+import { TablePage } from "./pages/TablePage";
+import EntityGraphTest from "./pages/EntityGraphTest";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -20,6 +23,9 @@ function App() {
           <Route path="/entities" element={<EntityPage />} />
           <Route path="/entities/:id" element={<EntityFormPage />} />
           <Route path="/entities-create" element={<EntityFormPage />} />
+          <Route path="/column-info/:id" element={<ColumnPage />} />
+          <Route path="/table-info/:id" element={<TablePage />} />
+          <Route path="/graph-test" element={<EntityGraphTest />} />
         </Routes>
         <Toaster />
       </div>

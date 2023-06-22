@@ -22,7 +22,7 @@ export function EntityCard({ entity }) {
         {entity.name}
       </h1>
       <p className="text-slate-400">{entity.description}</p>
-      <h2>Tipo de entidad</h2>
+      <h2>Tipo de entidad:</h2>
       <p className="text-slate-400">{entity.entityType}</p>
       {entity.entityType !== 'Database' ? (
         <>
