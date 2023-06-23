@@ -2,9 +2,11 @@ import React, { useEffect, useRef } from "react";
 import cytoscape from "cytoscape";
 import CytoscapeComponent from "react-cytoscapejs";
 import { getEntities } from "../api/entities.api";
+import { useParams } from "react-router-dom";
 
-const EntityGraphTest = () => {
+const TableColumnGraph = () => {
   const containerRef = useRef(null);
+  const { id } = useParams(); // Obtener el ID de la tabla desde la URL
   let cy = null;
 
   useEffect(() => {
@@ -13,19 +15,20 @@ const EntityGraphTest = () => {
         const response = await getEntities();
         const entities = response.data;
 
+        // Filtrar las entidades por el ID de la tabla y sus relaciones con las columnas
         const filteredEntities = entities.filter((entity) => {
-          const passedFilter = entity.entityType === "Table" || entity.entityType === "Column";
-          if (!passedFilter) {
-            console.log("Tipo de entidad no válido:", entity.entityType);
+          if (entity.id === id) {
+            return true; // La entidad tiene el ID que coincide con el ID de la tabla
           }
-          return passedFilter;
+        
+          // Verificar si alguno de los padres tiene el mismo ID que la tabla
+          const hasMatchingFather = entity.fathers.some((father) => father.id === id);
+          return hasMatchingFather;
         });
-
-        const filteredEntityIds = filteredEntities.map((entity) => entity.id);
-
-        const filteredFathers = filteredEntities.flatMap((entity) =>
-          entity.fathers.filter((father) => filteredEntityIds.includes(father.id))
-        );
+        
+        
+        console.log(id);
+        console.log(filteredEntities);
 
         cy = cytoscape({
           container: containerRef.current,
@@ -34,10 +37,13 @@ const EntityGraphTest = () => {
               data: { id: entity.id, name: entity.name, entityType: entity.entityType },
               classes: entity.entityType.toLowerCase(),
             })),
-            edges: filteredFathers.map((father) => ({
-              data: { source: father.id, target: father.childId },
-              classes: "edge",
-            })),
+            edges: filteredEntities
+              .flatMap((entity) =>
+                entity.fathers.map((father) => ({
+                  data: { source: father.id, target: entity.id },
+                  classes: "edge",
+                }))
+              ),
           },
           style: [
             {
@@ -68,7 +74,6 @@ const EntityGraphTest = () => {
             name: "cose",
             idealEdgeLength: 1000,
             nodeOverlap: 1,
-            refresh: 5,
             fit: true,
             padding: 20,
             randomize: false,
@@ -94,7 +99,7 @@ const EntityGraphTest = () => {
         cy.destroy();
       }
     };
-  }, []);
+  }, [id]); // Asegúrate de incluir el ID como dependencia para que el efecto se ejecute cuando cambie
 
   const getImageUrl = (ele) => {
     const id = ele.data("entityType");
@@ -115,4 +120,4 @@ const EntityGraphTest = () => {
   );
 };
 
-export default EntityGraphTest;
+export default TableColumnGraph;

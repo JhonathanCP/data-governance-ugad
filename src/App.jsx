@@ -7,6 +7,8 @@ import { EntityPage } from "./pages/EntityPage";
 import { ColumnPage } from "./pages/ColumnPage";
 import { TablePage } from "./pages/TablePage";
 import EntityGraphTest from "./pages/EntityGraphTest";
+import BDTableGraph from "./pages/BDTableGraph";
+import TableColumnGraph from "./pages/TableColumnGraph";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
           <Route path="/column-info/:id" element={<ColumnPage />} />
           <Route path="/table-info/:id" element={<TablePage />} />
           <Route path="/graph-test" element={<EntityGraphTest />} />
+          <Route path="/bdtable-graph" element={<BDTableGraph />} />
+          <Route path="/tablecolumn-graph/:id" element={<TableColumnGraph />} />
         </Routes>
         <Toaster />
       </div>

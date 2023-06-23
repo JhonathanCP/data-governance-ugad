@@ -12,6 +12,10 @@ const entitiesApi = axios.create({
 
 export const getEntities = () => entitiesApi.get("/entities/");
 
+export const getEntitiesByType = (id) => entitiesApi.get(`/entities-by-type/${id}/`);
+
+export const getEntitiesByClassification = (id) => entitiesApi.get(`/entities-by-classification/${id}/`);
+
 export const getEntity = (id) => entitiesApi.get(`/entities/${id}/`);
 
 export const createEntity = (entity) => entitiesApi.post("/entities/", entity);
