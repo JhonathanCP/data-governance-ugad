@@ -23,17 +23,37 @@ export function EntitiesList() {
   }, []);
 
   return (
-    <div>
+    <div class="table-container">
       {isLoading ? (
         <div className="flex items-center justify-center h-screen">
           <FaSpinner className="animate-spin text-5xl text-blue-500" />
         </div>
       ) : (
-        <div className="grid grid-cols-3 gap-3">
-          {entities.map((entity) => (
-            <EntityCard key={entity.id} entity={entity} />
-          ))}
-        </div>
+        <table class="table is-fullwidth is-narrow is-striped is-hoverable">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Tipo</th>
+              <th>Clasificaciones</th>
+              <th>Padres</th>
+            </tr>
+          </thead>
+          <tbody>
+            {entities.map((entity) => (
+              <EntityCard key={entity.id} entity={entity} />
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Tipo</th>
+              <th>Clasificaciones</th>
+              <th>Padres</th>
+            </tr>
+          </tfoot>
+        </table>
       )}
     </div>
   );

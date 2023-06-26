@@ -1,39 +1,66 @@
 import { useNavigate } from "react-router-dom";
+import { FaDatabase, FaTable, FaRulerVertical } from 'react-icons/fa'
+import { Link } from "react-router-dom";
 
 export function EntityCard({ entity }) {
   const navigate = useNavigate();
 
   return (
-    <div
-      className="bg-zinc-800 p-3 hover:bg-zinc-700 hover:cursor-pointer"
-      onClick={() => {
-        switch ( entity.entityType ){
-          case 'Database':
-            return navigate(`/entities/${entity.id}`);
-          case 'Table':
-            return navigate(`/table-info/${entity.id}`);
-          case 'Column':
-            return navigate(`/column-info/${entity.id}`);
-        }
-          
-      }}
-    >
-      <h1 className="text-white font-bold uppercase rounded-lg">
-        {entity.name}
-      </h1>
-      <p className="text-slate-400">{entity.description}</p>
-      <h2>Tipo de entidad:</h2>
-      <p className="text-slate-400">{entity.entityType}</p>
-      {entity.entityType !== 'Database' ? (
-        <>
-          <h2>Pertenece a:</h2>
-          <ul>
-            {entity.fathers.map((father) => (
-              <li className="text-slate-400">{father['entityType'].concat(': '+father['name'])}</li>
-            ))}
-          </ul>
-        </>
-      ) : null}
-    </div>
+    <tr>
+      <td>
+        <div className="columns is-vcentered"
+          onClick={() => {
+            switch (entity.entityType) {
+              case 'Database':
+                return navigate(`/entities/${entity.id}`);
+              case 'Table':
+                return navigate(`/table-info/${entity.id}`);
+              case 'Column':
+                return navigate(`/column-info/${entity.id}`);
+              default:
+                break;
+            }
+          }}
+          >
+          <div className="column is-narrow" href="/">
+            {(() => {
+              switch (entity.entityType) {
+                case 'Database':
+                  return <span class="icon is-medium has-text-link"><FaDatabase /></span>;
+                case 'Table':
+                  return <span class="icon is-medium has-text-link"><FaTable /></span>;
+                case 'Column':
+                  return <span class="icon is-medium has-text-link"><FaRulerVertical /></span>;
+                default:
+                  return null;
+              }
+            })()}
+          </div>
+          <Link className="column">
+            {entity.name}
+          </Link>
+        </div>
+      </td>
+      <td>{entity.description}</td>
+      <td>
+        <Link>
+          {entity.entityType}
+        </Link>
+      </td>
+      <td>
+        <div class="tags">
+          {entity.classifications.map((classification) => (
+            <Link key={classification.id} class="is-clickable tag is-primary is-light">{classification.name}</Link>
+          ))}
+        </div>
+      </td>
+      <td>
+        <div className="tags">
+          {entity.fathers.map((father) => (
+            <Link key={father.id} class="is-clickable tag is-link is-light">{father.name}</Link>
+          ))}
+        </div>
+      </td>
+    </tr>
   );
 }

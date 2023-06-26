@@ -1,25 +1,66 @@
 import { Link } from "react-router-dom";
 
 export function Navigation() {
-  return (
-    <div className="flex justify-between py-3 items-center">
-      <Link to="/entities">
-        <h1 className="font-bold text-3xl mb-4">UGAD Data Governance App</h1>
-      </Link>
-      <div className="flex justify-between py-3 items-center">
-        <button className="bg-blue-500 p-2 rounded-lg mr-3">
-          <Link to="/entitytypes" className="text-white">Entity Types</Link>
-        </button>
-        <button className="bg-blue-500 p-2 rounded-lg mr-3">
-          <Link to="/entitytypes-create" className="text-white">Create Entity Type</Link>
-        </button>
-        <button className="bg-blue-500 p-2 rounded-lg mr-3">
-          <Link to="/entities" className="text-white">Entities</Link>
-        </button> 
-        <button className="bg-blue-500 p-2 rounded-lg">
-          <Link to="/graph-test" className="text-white">DB Graph</Link>
-        </button>
-      </div>      
+  return (    
+  <nav class="navbar pl-5 pr-5" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://bulma.io">
+        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28"></img>
+      </a>
+
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
     </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="/entitytypes">
+          Entity Types
+        </a>
+
+        <a class="navbar-item" href="/entities">
+          Entities
+        </a>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Más
+          </a>
+
+          <div class="navbar-dropdown">
+            <a class="navbar-item">
+              DB Graph
+            </a>
+            <a class="navbar-item">
+              DB Graph
+            </a>
+            <a class="navbar-item">
+              DB Graph
+            </a>
+            <hr class="navbar-divider"></hr>
+            <a class="navbar-item">
+              DB Graph
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-primary">
+              <strong>Sign up</strong>
+            </a>
+            <a class="button is-light">
+              Log in
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
   );
 }
