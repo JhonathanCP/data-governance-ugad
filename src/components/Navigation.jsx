@@ -4,8 +4,8 @@ export function Navigation() {
   return (    
   <nav className="navbar pl-5 pr-5 is-link" role="navigation" aria-label="main navigation">
     <div className="navbar-brand">
-      <a className="navbar-item" href="https://bulma.io">
-        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28"></img>
+      <a className="navbar-item" href="/">
+        <img src="../public/LogoUGAD.png" width="112" height="28"></img>
       </a>
 
       <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
