@@ -9,6 +9,7 @@ import { EntityFormPage } from "./pages/EntityFormPage";
 import { EntityPage } from "./pages/EntityPage";
 import { ColumnPage } from "./pages/ColumnPage";
 import { TablePage } from "./pages/TablePage";
+import { DatabasePage } from "./pages/DatabasePage";
 import EntityGraphTest from "./pages/EntityGraphTest";
 import BDTableGraph from "./pages/BDTableGraph";
 import TableColumnGraph from "./pages/TableColumnGraph";
@@ -29,24 +30,24 @@ function App() {
     <BrowserRouter>
       <div className="container is-fluid p-0">
         <Navigation />
-        <div class="columns is-gapless">
+        <div className="columns is-gapless">
           {menuVisible && (
-            <div className="column is-one-fifth is-primary has-background-primary">
+            <div className="column is-one-fifth has-background-link">
               <Menu />
             </div>
           )}
           <div className={`column ${menuVisible ? 'is-four-fifths' : 'is-full'}`}>
-            <div class="columns is-vcentered">
-              <div class="column is-1">
-                <span class="icon is-medium has-text-info" onClick={toggleMenu}>
+            <div className="columns is-vcentered is-gapless mr-5 mt-3">
+              <div className="column is-1">
+                <span className="icon is-medium has-text-info" onClick={toggleMenu}>
                   <FaBars />
                 </span>
               </div>
-              <div class="column">
+              <div className="column">
                 <Search />
               </div>
             </div>
-            <div className=" is-scrollable" style={{ maxHeight: '85vh', overflowY: 'auto' }}>
+            <div className=" is-scrollable" style={{ height: '85vh', overflowY: 'auto' }}>
               <Routes>
                 {/* redirect to entitytypes */}
                 <Route path="/" element={<Navigate to="/entities" />} />
@@ -54,7 +55,8 @@ function App() {
                 <Route path="/entitytypes/:id" element={<EntityTypeFormPage />} />
                 <Route path="/entitytypes-create" element={<EntityTypeFormPage />} />
                 <Route path="/entities" element={<EntityPage />} />
-                <Route path="/entities/:id" element={<EntityFormPage />} />
+                <Route path="/database-info/:id" element={<DatabasePage />} />
+                {/* <Route path="/entities/:id" element={<EntityFormPage />} /> */}
                 <Route path="/entities-create" element={<EntityFormPage />} />
                 <Route path="/column-info/:id" element={<ColumnPage />} />
                 <Route path="/table-info/:id" element={<TablePage />} />

@@ -14,7 +14,7 @@ export function EntityTypesList() {
   }, []);
 
   return (
-    <div className="grid grid-cols-3 gap-3">
+    <div className="columns is-vcentered is-centered" style={{ height: '80vh', overflowY: 'auto' }}>
       {entityTypes.map((entityType) => (
         <EntityTypeCard key={entityType.id} entityType={entityType} />
       ))}

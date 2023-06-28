@@ -50,34 +50,46 @@ export function EntityTypeFormPage() {
   }, []);
 
   return (
-    <div className="max-w-xl mx-auto">
-      <form onSubmit={onSubmit} className="bg-zinc-800 p-10 rounded-lg mt-2">
-        <input
-          type="text"
-          placeholder="Name"
-          {...register("name", { required: true })}
-          className="bg-zinc-700 p-3 rounded-lg block w-full mb-3"
-          autoFocus
-        />
+    <div className="columns is-vcentered is-centered" style={{ height: '80vh', overflowY: 'auto' }}>
+      <div className="column is-half">
+      <form onSubmit={onSubmit} >
+        <div className="field">
+          <label className="label">Name</label>
+          <div className="control">
+            <input
+              type="text"
+              placeholder="Name"
+              {...register("name", { required: true })}
+              className={`input ${errors.name ? "is-danger" : ""}`}
+              autoFocus
+            />
+          </div>
+          {errors.name && <p className="help is-danger">This field is required</p>}
+        </div>
+        <div className="field">
+          <label className="label">Description</label>
+          <div className="control">
+            <textarea
+              placeholder="Description"
+              {...register("description", { required: true })}
+              className={`textarea ${errors.description ? "is-danger" : ""}`}
+            />
+          </div>
+          {errors.description && <p className="help is-danger">This field is required</p>}
+        </div>
 
-        {errors.name && <span>This field is required</span>}
-        <textarea
-          placeholder="Description"
-          {...register("description", { required: true })}
-          className="bg-zinc-700 p-3 rounded-lg block w-full"
-        />
-
-        {errors.description && <span>This field is required</span>}
-
-        <button className="bg-indigo-500 p-3 rounded-lg block w-full mt-3">
-          Save
-        </button>
+        <div className="field is-grouped">
+          <div className="control">
+            <button className="button is-primary">Save</button>
+          </div>
+        </div>
       </form>
+      </div>
 
       {params.id && (
         <div className="flex justify-end">
           <button
-            className="bg-red-500 p-3 rounded-lg w-48 mt-3"
+            className="button is-danger mt-3"
             onClick={async () => {
               const accepted = window.confirm("Are you sure?");
               if (accepted) {
@@ -93,7 +105,7 @@ export function EntityTypeFormPage() {
               }
             }}
           >
-            delete
+            Delete
           </button>
         </div>
       )}

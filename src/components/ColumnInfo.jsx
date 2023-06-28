@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getColumnInfo } from "../api/entities.api";
+import { FaDatabase, FaTable } from 'react-icons/fa';
 
 export function ColumnInfo() {
-  const [columnInfo, setColumnInfo] = useState([]);
+  const [columnInfo, setColumnInfo] = useState(null);
+  const [activeTab, setActiveTab] = useState("properties");
   const params = useParams();
 
   useEffect(() => {
@@ -12,39 +14,108 @@ export function ColumnInfo() {
       setColumnInfo(res.data);
     }
     loadColumnInfo();
-  }, []);
+  }, [params.id]);
 
-  const filteredAttributes = Object.entries(columnInfo).filter(([key]) => key !== 'column_name' && key !== 'table_ids');
-  
   return (
-    <div className="bg-zinc-800 p-3 hover:bg-zinc-700 hover:cursor-pointer">
-      <h1 className="text-white font-bold uppercase rounded-lg">
-        {columnInfo.column_name}
-      </h1>
-      {filteredAttributes.map(([key, value]) => (
-        <div key={key} className="mb-4">
-          <h2 className="text-white font-bold">{key}:</h2>
-          <p className="text-slate-400">{value !== null ? value : "null"}</p>
+    <div>
+      <div className="tabs">
+        <ul>
+          <li className={activeTab === "properties" ? "is-active" : ""}>
+            <a onClick={() => setActiveTab("properties")}>Properties</a>
+          </li>
+          <li className={activeTab === "relationships" ? "is-active" : ""}>
+            <a onClick={() => setActiveTab("relationships")}>Relationships</a>
+          </li>
+          <li className={activeTab === "classifications" ? "is-active" : ""}>
+            <a onClick={() => setActiveTab("classifications")}>Classifications</a>
+          </li>
+        </ul>
+      </div>
+
+      <div className={`tab-content ${activeTab === "properties" ? "is-active" : ""}`}>
+        <div className="box">
+          <h2 className="title is-6">{columnInfo && columnInfo.column_name}</h2>
+          <p>Is Nullable: {columnInfo && columnInfo.is_nullable}</p>
+          <p>Data Type: {columnInfo && columnInfo.data_type}</p>
+          <p>Character Maximum Length: {columnInfo && columnInfo.character_maximum_length}</p>
+          <p>Numeric Precision: {columnInfo && columnInfo.numeric_precision}</p>
+          <p>Numeric Scale: {columnInfo && columnInfo.numeric_scale}</p>
+          <p>Datetime Precision: {columnInfo && columnInfo.datetime_precision}</p>
         </div>
-      ))}
-      {columnInfo.table_ids && columnInfo.table_ids.length > 0 && (
-        <div>
-          <h2 className="text-white font-bold">Belongs to:</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-            {columnInfo.table_ids.map((table) => (
-              <Link
-                to={`/table-info/${table.id}`} // Reemplaza `/ruta` con tu ruta deseada
-                key={table.id}
-              >
-                <div className="bg-white p-3">
-                  <h2 className="text-gray-800 font-bold">{table.name}</h2>
-                  <p>{table.description ? table.description : "No description"}</p>
-                </div>
-              </Link>
-            ))}
+      </div>
+
+      <div className={`tab-content ${activeTab === "relationships" ? "is-active" : ""}`}>
+        <div className="box">
+          <h2 className="title is-6">Parents:</h2>
+          <div className="table-container">
+            <table className="table is-fullwidth is-narrow is-striped is-hoverable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Entity Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {columnInfo &&
+                  columnInfo.fathers &&
+                  columnInfo.fathers.map((father) => (
+                    <tr key={father.id}>
+                      <td>
+                        <div className="columns is-vcentered">
+                          <div className="column is-narrow">
+                            {(() => {
+                              switch (father.entityType) {
+                                case 'Database':
+                                  return <span className="icon is-medium has-text-link"><FaDatabase /></span>;
+                                case 'Table':
+                                  return <span className="icon is-medium has-text-link"><FaTable /></span>;
+                                default:
+                                  return null;
+                              }
+                            })()}
+                          </div>
+                          <Link className="column" to={(() => {
+                            switch (father.entityType) {
+                              case 'Database':
+                                return `/database-info/${father.id}`;
+                              case 'Table':
+                                return `/table-info/${father.id}`;
+                              case 'Column':
+                                return `/column-info/${father.id}`;
+                              default:
+                                break;
+                            }
+                          })()}>
+                            {father.name}
+                          </Link>
+                        </div>
+                      </td>
+                      <td>{father.entityType}</td>
+                      <td>{father.description}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
           </div>
         </div>
-      )}
+      </div>
+
+      <div className={`tab-content ${activeTab === "classifications" ? "is-active" : ""}`}>
+        <div className="box">
+          <h2 className="title is-6">Classifications:</h2>
+          <div>
+            {columnInfo &&
+              columnInfo.classifications &&
+              columnInfo.classifications.map((classification) => (
+                <div key={classification.id}>
+                  <p>Name: {classification.name}</p>
+                  <p>Description: {classification.description}</p>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

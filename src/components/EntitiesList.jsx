@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getEntities } from "../api/entities.api";
-import { EntityCard } from "./EntityCard";
+import { EntityRow } from "./EntityRow";
 import { FaSpinner } from 'react-icons/fa';
 
 export function EntitiesList() {
@@ -23,13 +23,13 @@ export function EntitiesList() {
   }, []);
 
   return (
-    <div class="table-container">
+    <div className="table-container">
       {isLoading ? (
-        <div className="flex items-center justify-center h-screen">
-          <FaSpinner className="animate-spin text-5xl text-blue-500" />
+        <div className="columns has-text-primary is-centered is-vcentered" style={{ height: '85vh' }}>
+          <FaSpinner className="spinner" style={{ fontSize: "3rem" }} />
         </div>
       ) : (
-        <table class="table is-fullwidth is-narrow is-striped is-hoverable">
+        <table className="table is-fullwidth is-narrow is-striped is-hoverable">
           <thead>
             <tr>
               <th>Nombre</th>
@@ -41,7 +41,7 @@ export function EntitiesList() {
           </thead>
           <tbody>
             {entities.map((entity) => (
-              <EntityCard key={entity.id} entity={entity} />
+              <EntityRow key={entity.id} entity={entity} />
             ))}
           </tbody>
           <tfoot>

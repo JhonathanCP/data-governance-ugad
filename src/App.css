@@ -744,7 +744,7 @@ a.box:active {
     border-color: transparent;
     color: #fff; }
     .button.is-primary:hover, .button.is-primary.is-hovered {
-      background-color: #00c4a7;
+      background-color: #006496;
       border-color: transparent;
       color: #fff; }
     .button.is-primary:focus, .button.is-primary.is-focused {
@@ -753,7 +753,7 @@ a.box:active {
       .button.is-primary:focus:not(:active), .button.is-primary.is-focused:not(:active) {
         box-shadow: 0 0 0 0.125em rgba(0, 209, 178, 0.25); }
     .button.is-primary:active, .button.is-primary.is-active {
-      background-color: #00b89c;
+      background-color: #006496;
       border-color: transparent;
       color: #fff; }
     .button.is-primary[disabled],
@@ -832,7 +832,7 @@ a.box:active {
       .button.is-link:focus:not(:active), .button.is-link.is-focused:not(:active) {
         box-shadow: 0 0 0 0.125em rgba(72, 95, 199, 0.25); }
     .button.is-link:active, .button.is-link.is-active {
-      background-color: #3a51bb;
+      background-color: #007cba;
       border-color: transparent;
       color: #fff; }
     .button.is-link[disabled],
@@ -2411,7 +2411,7 @@ a.tag:hover {
   .select.is-primary select {
     border-color: #007cba; }
     .select.is-primary select:hover, .select.is-primary select.is-hovered {
-      border-color: #00b89c; }
+      border-color: #006496; }
     .select.is-primary select:focus, .select.is-primary select.is-focused, .select.is-primary select:active, .select.is-primary select.is-active {
       box-shadow: 0 0 0 0.125em rgba(0, 209, 178, 0.25); }
   .select.is-link:not(:hover)::after {
@@ -2419,7 +2419,7 @@ a.tag:hover {
   .select.is-link select {
     border-color: #319ebd; }
     .select.is-link select:hover, .select.is-link select.is-hovered {
-      border-color: #3a51bb; }
+      border-color: #007cba; }
     .select.is-link select:focus, .select.is-link select.is-focused, .select.is-link select:active, .select.is-link select.is-active {
       box-shadow: 0 0 0 0.125em rgba(72, 95, 199, 0.25); }
   .select.is-info:not(:hover)::after {
@@ -2563,7 +2563,7 @@ a.tag:hover {
     box-shadow: 0 0 0.5em rgba(0, 209, 178, 0.25);
     color: #fff; }
   .file.is-primary:active .file-cta, .file.is-primary.is-active .file-cta {
-    background-color: #00b89c;
+    background-color: #006496;
     border-color: transparent;
     color: #fff; }
   .file.is-link .file-cta {
@@ -2579,7 +2579,7 @@ a.tag:hover {
     box-shadow: 0 0 0.5em rgba(72, 95, 199, 0.25);
     color: #fff; }
   .file.is-link:active .file-cta, .file.is-link.is-active .file-cta {
-    background-color: #3a51bb;
+    background-color: #007cba;
     border-color: transparent;
     color: #fff; }
   .file.is-info .file-cta {
@@ -3323,7 +3323,7 @@ button.dropdown-item {
     display: block;
     padding: 0.5em 0.75em; }
     .menu-list a:hover {
-      background-color: whitesmoke;
+      background-color: #007cba;
       color: #363636; }
     .menu-list a.is-active {
       background-color: #319ebd;
@@ -3743,7 +3743,7 @@ button.dropdown-item {
     .navbar.is-primary .navbar-brand .navbar-link:focus,
     .navbar.is-primary .navbar-brand .navbar-link:hover,
     .navbar.is-primary .navbar-brand .navbar-link.is-active {
-      background-color: #00b89c;
+      background-color: #006496;
       color: #fff; }
     .navbar.is-primary .navbar-brand .navbar-link::after {
       border-color: #fff; }
@@ -3765,7 +3765,7 @@ button.dropdown-item {
       .navbar.is-primary .navbar-end .navbar-link:focus,
       .navbar.is-primary .navbar-end .navbar-link:hover,
       .navbar.is-primary .navbar-end .navbar-link.is-active {
-        background-color: #00b89c;
+        background-color: #006496;
         color: #fff; }
       .navbar.is-primary .navbar-start .navbar-link::after,
       .navbar.is-primary .navbar-end .navbar-link::after {
@@ -3773,7 +3773,7 @@ button.dropdown-item {
       .navbar.is-primary .navbar-item.has-dropdown:focus .navbar-link,
       .navbar.is-primary .navbar-item.has-dropdown:hover .navbar-link,
       .navbar.is-primary .navbar-item.has-dropdown.is-active .navbar-link {
-        background-color: #00b89c;
+        background-color: #006496;
         color: #fff; }
       .navbar.is-primary .navbar-dropdown a.navbar-item.is-active {
         background-color: #007cba;
@@ -3788,7 +3788,7 @@ button.dropdown-item {
     .navbar.is-link .navbar-brand .navbar-link:focus,
     .navbar.is-link .navbar-brand .navbar-link:hover,
     .navbar.is-link .navbar-brand .navbar-link.is-active {
-      background-color: #3a51bb;
+      background-color: #007cba;
       color: #fff; }
     .navbar.is-link .navbar-brand .navbar-link::after {
       border-color: #fff; }
@@ -3810,7 +3810,7 @@ button.dropdown-item {
       .navbar.is-link .navbar-end .navbar-link:focus,
       .navbar.is-link .navbar-end .navbar-link:hover,
       .navbar.is-link .navbar-end .navbar-link.is-active {
-        background-color: #3a51bb;
+        background-color: #007cba;
         color: #fff; }
       .navbar.is-link .navbar-start .navbar-link::after,
       .navbar.is-link .navbar-end .navbar-link::after {
@@ -3818,7 +3818,7 @@ button.dropdown-item {
       .navbar.is-link .navbar-item.has-dropdown:focus .navbar-link,
       .navbar.is-link .navbar-item.has-dropdown:hover .navbar-link,
       .navbar.is-link .navbar-item.has-dropdown.is-active .navbar-link {
-        background-color: #3a51bb;
+        background-color: #007cba;
         color: #fff; }
       .navbar.is-link .navbar-dropdown a.navbar-item.is-active {
         background-color: #319ebd;
@@ -7554,7 +7554,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
     .hero.is-primary a.navbar-item:hover, .hero.is-primary a.navbar-item.is-active,
     .hero.is-primary .navbar-link:hover,
     .hero.is-primary .navbar-link.is-active {
-      background-color: #00b89c;
+      background-color: #006496;
       color: #fff; }
     .hero.is-primary .tabs a {
       color: #fff;
@@ -7599,7 +7599,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
     .hero.is-link a.navbar-item:hover, .hero.is-link a.navbar-item.is-active,
     .hero.is-link .navbar-link:hover,
     .hero.is-link .navbar-link.is-active {
-      background-color: #3a51bb;
+      background-color: #007cba;
       color: #fff; }
     .hero.is-link .tabs a {
       color: #fff;
@@ -7876,3 +7876,32 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 .footer {
   background-color: #fafafa;
   padding: 3rem 1.5rem 6rem; }
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s infinite linear;
+}
+
+/* Estilo para la pestaña activa */
+.tab-link.is-active a {
+  background-color: #3273dc;
+  color: #ffffff;
+}
+
+/* Opcional: Estilo para el contenido de la pestaña activa */
+.tab-content.is-active {
+  display: block;
+}
+
+/* Opcional: Estilo para ocultar el contenido de las pestañas inactivas */
+.tab-content {
+  display: none;
+}

@@ -14,7 +14,7 @@ const BDTableGraph = () => {
             const entities = response.data;
 
             const filteredEntities = entities.filter((entity) => {
-            const passedFilter = entity.entityType === "Table" || entity.entityType === "Column";
+            const passedFilter = entity.entityType === "Table" || entity.entityType === "Database";
             if (!passedFilter) {
                 console.log("Tipo de entidad no válido:", entity.entityType);
             }
@@ -34,7 +34,7 @@ const BDTableGraph = () => {
                 edges: filteredEntities
                 .flatMap((entity) =>
                     entity.fathers
-                    .filter((father) => father.entityType === "Table" || father.entityType === "Column")
+                    .filter((father) => father.entityType === "Table" || father.entityType === "Database")
                     .map((father) => ({
                         data: { source: father.id, target: entity.id },
                         classes: "edge",
