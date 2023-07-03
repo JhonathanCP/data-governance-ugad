@@ -10,9 +10,7 @@ import { EntityPage } from "./pages/EntityPage";
 import { ColumnPage } from "./pages/ColumnPage";
 import { TablePage } from "./pages/TablePage";
 import { DatabasePage } from "./pages/DatabasePage";
-import EntityGraphTest from "./pages/EntityGraphTest";
-import BDTableGraph from "./pages/BDTableGraph";
-import TableColumnGraph from "./pages/TableColumnGraph";
+import { FilteredEntitiesPage } from "./pages/FilteredEntitiesPage";
 import { Toaster } from "react-hot-toast";
 import 'bulma/css/bulma.min.css'; 
 import './App.css'
@@ -60,9 +58,7 @@ function App() {
                 <Route path="/entities-create" element={<EntityFormPage />} />
                 <Route path="/column-info/:id" element={<ColumnPage />} />
                 <Route path="/table-info/:id" element={<TablePage />} />
-                <Route path="/graph-test" element={<EntityGraphTest />} />
-                <Route path="/bdtable-graph" element={<BDTableGraph />} />
-                <Route path="/tablecolumn-graph/:id" element={<TableColumnGraph />} />
+                <Route path="/filtereditems" element={<FilteredEntitiesPage />} />
               </Routes>
             </div>
           </div>

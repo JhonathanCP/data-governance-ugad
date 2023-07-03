@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getColumnInfo } from "../api/entities.api";
 import { FaDatabase, FaTable } from 'react-icons/fa';
+import EntityGraph from './EntityGraph'
 
 export function ColumnInfo() {
   const [columnInfo, setColumnInfo] = useState(null);
@@ -28,6 +29,9 @@ export function ColumnInfo() {
           </li>
           <li className={activeTab === "classifications" ? "is-active" : ""}>
             <a onClick={() => setActiveTab("classifications")}>Classifications</a>
+          </li>
+          <li className={activeTab === "graph" ? "is-active" : ""}>
+            <a onClick={() => setActiveTab("graph")}>Graph</a>
           </li>
         </ul>
       </div>
@@ -115,6 +119,9 @@ export function ColumnInfo() {
               ))}
           </div>
         </div>
+      </div>
+      <div className={`tab-content ${activeTab === "graph" ? "is-active" : ""}`}>
+        <EntityGraph />
       </div>
     </div>
   );

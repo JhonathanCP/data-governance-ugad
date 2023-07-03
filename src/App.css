@@ -7905,3 +7905,9 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 .tab-content {
   display: none;
 }
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

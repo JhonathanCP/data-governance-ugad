@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { getTableInfo } from "../api/entities.api";
 import { FaDatabase, FaTable, FaRulerVertical } from 'react-icons/fa'
+import EntityGraph from './EntityGraph'
 
 export function TableInfo() {
   const [tableInfo, setTableInfo] = useState([]);
@@ -33,6 +34,9 @@ export function TableInfo() {
           </li>
           <li className={activeTab === "sampleData" ? "is-active" : ""}>
             <a onClick={() => setActiveTab("sampleData")}>Sample Data</a>
+          </li>
+          <li className={activeTab === "graph" ? "is-active" : ""}>
+            <a onClick={() => setActiveTab("graph")}>Graph</a>
           </li>
         </ul>
       </div>
@@ -180,34 +184,36 @@ export function TableInfo() {
       </div>
 
       <div className={`tab-content ${activeTab === "sampleData" ? "is-active" : ""}`}>
-      <div className="table-container">
-  <table className="table is-fullwidth  is-striped is-hoverable">
-    <thead>
-      <tr>
-        {tableInfo.data_sample &&
-          tableInfo.data_sample.length > 0 &&
-          Object.keys(tableInfo.data_sample[0]).map((key) => (
-            <th key={key}>{key}</th>
-          ))}
-      </tr>
-    </thead>
-    <tbody>
-      {tableInfo.data_sample &&
-        tableInfo.data_sample.map((row, index) => (
-          <tr key={index}>
-            {Object.values(row).map((value, idx) => (
-              <td key={idx} style={{ whiteSpace: "nowrap" }}>
-                <div className="is-clipped" style={{ maxWidth: "200px" }}>
-                  <p>{value}</p>
-                </div>
-              </td>
-            ))}
-          </tr>
-        ))}
-    </tbody>
-  </table>
-</div>
-
+        <div className="table-container">
+          <table className="table is-fullwidth  is-striped is-hoverable">
+            <thead>
+              <tr>
+                {tableInfo.data_sample &&
+                  tableInfo.data_sample.length > 0 &&
+                  Object.keys(tableInfo.data_sample[0]).map((key) => (
+                    <th key={key}>{key}</th>
+                  ))}
+              </tr>
+            </thead>
+            <tbody>
+              {tableInfo.data_sample &&
+                tableInfo.data_sample.map((row, index) => (
+                  <tr key={index}>
+                    {Object.values(row).map((value, idx) => (
+                      <td key={idx} style={{ whiteSpace: "nowrap" }}>
+                        <div className="is-clipped" style={{ maxWidth: "200px" }}>
+                          <p>{value}</p>
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className={`tab-content ${activeTab === "graph" ? "is-active" : ""}`}>
+        <EntityGraph />
       </div>
     </div>
   );

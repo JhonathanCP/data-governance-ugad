@@ -17,15 +17,16 @@ export function Navigation() {
 
     <div id="navbarBasicExample" className="navbar-menu">
       <div className="navbar-start">
-        <a className="navbar-item" href="/entitytypes">
-          Entity Types
-        </a>
-
+        
         <a className="navbar-item" href="/entities">
           Entities
         </a>
 
-        <div className="navbar-item has-dropdown is-hoverable">
+        <a className="navbar-item" href="/entitytypes">
+          Entity Types
+        </a>        
+
+        {/* <div className="navbar-item has-dropdown is-hoverable">
           <a className="navbar-link">
             Más
           </a>
@@ -45,10 +46,10 @@ export function Navigation() {
               DB Graph
             </a>
           </div>
-        </div>
+        </div> */}
       </div>
 
-      <div className="navbar-end">
+      {/* <div className="navbar-end">
         <div className="navbar-item">
           <div className="buttons">
             <a className="button is-primary">
@@ -59,7 +60,7 @@ export function Navigation() {
             </a>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   </nav>
   );

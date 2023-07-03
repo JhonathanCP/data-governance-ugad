@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import { getEntityTypes } from '../api/entityTypes.api';
 import { getClassifications } from '../api/classifications.api';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Menu = ({ isVisible }) => {
     const [entityTypes, setEntityTypes] = useState([]);
@@ -10,6 +10,7 @@ const Menu = ({ isVisible }) => {
     const [selectedEntityType, setSelectedEntityType] = useState('');
     const [selectedClassification, setSelectedClassification] = useState('');
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchEntityTypes() {
@@ -34,31 +35,39 @@ const Menu = ({ isVisible }) => {
         fetchClassifications();
     }, []);
 
+    const handleEntityTypeSelection = (entityType) => {
+        setSelectedEntityType(entityType === selectedEntityType ? '' : entityType);
+    };
+
+    const handleClassificationSelection = (classification) => {
+        setSelectedClassification(classification === selectedClassification ? '' : classification);
+    };
+
     const handleFilter = () => {
         // Construir la URL con los filtros seleccionados
         const queryParams = new URLSearchParams();
         if (selectedEntityType) {
-        queryParams.set('type', selectedEntityType.name);
+        queryParams.set('type', selectedEntityType.id);
         }
         if (selectedClassification) {
-        queryParams.set('classification', selectedClassification.name);
+        queryParams.set('classification', selectedClassification.id);
         }
         const search = queryParams.toString();
 
-        // Redirigir al componente FilteredData con los filtros seleccionados
-        window.location.href = `/filtered-data/${search}`;
+        // Redirigir al componente FilteredEntities con los filtros seleccionados
+        navigate(`/filtereditems?${search}`);
     };
 
     return (
-        <aside className={`menu ${isVisible ? 'is-active' : ''}`}>
-        <ul className="menu-list">
-            <li>
-            <div className="dropdown is-hoverable">
+        <aside className={`menu ${isVisible ? 'is-active' : ''} mt-1`}>
+        <ul className="menu-list mt-5">
+            <li className="block mt-6">
+            <div className="dropdown is-hoverable is-centered">
                 <div className="dropdown-trigger">
-                <button className="button is-primary is-fullwidth" aria-haspopup="true" aria-controls="dropdown-entity-type">
-                    <span>Tipo de entidad</span>
+                <button className="button is-fullwidth" aria-haspopup="true" aria-controls="dropdown-entity-type">
+                    <span>{selectedEntityType ? selectedEntityType.name : 'Tipo de entidad'}</span>
                     <span className="icon is-small">
-                        <FaSearch />
+                    <FaSearch />
                     </span>
                 </button>
                 </div>
@@ -69,20 +78,20 @@ const Menu = ({ isVisible }) => {
                         key={entityType.id}
                         href="#"
                         className={`dropdown-item ${entityType === selectedEntityType ? 'is-active' : ''}`}
-                        onClick={() => setSelectedEntityType(entityType)}
+                        onClick={() => handleEntityTypeSelection(entityType)}
                     >
                         {entityType.name}
-                    </a>                  
+                    </a>
                     ))}
                 </div>
                 </div>
             </div>
             </li>
-            <li>
-            <div className="dropdown is-hoverable">
+            <li className="block">
+            <div className="dropdown is-hoverable is-centered">
                 <div className="dropdown-trigger">
                 <button className="button" aria-haspopup="true" aria-controls="dropdown-classification">
-                    <span>Clasificaciones</span>
+                    <span>{selectedClassification ? selectedClassification.name : 'Clasificaciones'}</span>
                     <span className="icon is-small">
                     <FaSearch />
                     </span>
@@ -95,7 +104,7 @@ const Menu = ({ isVisible }) => {
                         key={classification.id}
                         href="#"
                         className={`dropdown-item ${classification === selectedClassification ? 'is-active' : ''}`}
-                        onClick={() => setSelectedClassification(classification)}
+                        onClick={() => handleClassificationSelection(classification)}
                     >
                         {classification.name}
                     </a>
@@ -104,8 +113,8 @@ const Menu = ({ isVisible }) => {
                 </div>
             </div>
             </li>
-            <li>
-            <button className="button" onClick={handleFilter}>
+            <li className="block">
+            <button className="button is-centered" onClick={handleFilter}>
                 Filtrar
             </button>
             </li>
