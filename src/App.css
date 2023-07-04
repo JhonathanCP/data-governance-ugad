@@ -7911,3 +7911,16 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   flex-direction: column;
   align-items: center;
 }
+
+.transparent-background {
+  background-color: transparent;
+}
+
+.modal-card-custom {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  max-height: 80%;
+  overflow-y: auto;
+  transform: translate(-10%, -10%);
+}

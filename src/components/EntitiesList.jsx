@@ -44,7 +44,7 @@ export function EntitiesList() {
               <EntityRow key={entity.id} entity={entity} />
             ))}
           </tbody>
-          <tfoot>
+          {/* <tfoot>
             <tr>
               <th>Nombre</th>
               <th>Descripción</th>
@@ -52,7 +52,7 @@ export function EntitiesList() {
               <th>Clasificaciones</th>
               <th>Padres</th>
             </tr>
-          </tfoot>
+          </tfoot> */}
         </table>
       )}
     </div>

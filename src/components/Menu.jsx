@@ -121,12 +121,12 @@ const Menu = ({ isVisible }) => {
             </li>
             <li className="block">
             <div className="buttons">
-                <button className="button is-info" onClick={handleFilter}>
-                Filtrar
-                </button>
-                <button className="button is-danger" onClick={handleClear}>
+            <button className="button is-primary" onClick={handleClear}>
                 Limpiar
                 </button>
+                <button className="button is-primary" onClick={handleFilter}>
+                Filtrar
+                </button>            
             </div>
             </li>
         </ul>
