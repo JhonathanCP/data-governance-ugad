@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { getEntity } from "../api/entities.api";
 import { FaDatabase, FaTable } from 'react-icons/fa';
 import EntityGraph from './EntityGraph'
+import { EntityForm } from "./EntityForm";
 
 export function DatabaseInfo() {
     const [databaseInfo, setDatabaseInfo] = useState(null);
@@ -22,16 +23,19 @@ export function DatabaseInfo() {
         <div className="tabs">
             <ul>
                 <li className={activeTab === "properties" ? "is-active" : ""}>
-                    <a onClick={() => setActiveTab("properties")}>Properties</a>
+                    <a onClick={() => setActiveTab("properties")}>Propiedades</a>
                 </li>
                 <li className={activeTab === "relationships" ? "is-active" : ""}>
-                    <a onClick={() => setActiveTab("relationships")}>Relationships</a>
+                    <a onClick={() => setActiveTab("relationships")}>Relaciones</a>
                 </li>
                 <li className={activeTab === "classifications" ? "is-active" : ""}>
-                    <a onClick={() => setActiveTab("classifications")}>Classifications</a>
+                    <a onClick={() => setActiveTab("classifications")}>Clasificaciones</a>
                 </li>
                 <li className={activeTab === "graph" ? "is-active" : ""}>
-                    <a onClick={() => setActiveTab("graph")}>Graph</a>
+                    <a onClick={() => setActiveTab("graph")}>Gráfico</a>
+                </li>
+                <li className={activeTab === "edit" ? "is-active" : ""}>
+                    <a onClick={() => setActiveTab("edit")}>Editar</a>
                 </li>
             </ul>
         </div>
@@ -103,16 +107,14 @@ export function DatabaseInfo() {
         <div className={`tab-content ${activeTab === "classifications" ? "is-active" : ""}`}>
             <div className="box">
             <h2 className="title is-6">Classifications:</h2>
-                <div>
-                    {databaseInfo &&
-                    databaseInfo.classifications &&
-                    databaseInfo.classifications.map((classification) => (
-                        <div key={classification.id}>
-                        <p>Name: {classification.name}</p>
-                        <p>Description: {classification.description}</p>
-                        </div>
-                    ))}
-                </div>
+                {databaseInfo &&
+                databaseInfo.classifications &&
+                databaseInfo.classifications.map((classification) => (
+                    <div className="box" key={classification.id}>
+                    <p>Name: {classification.name}</p>
+                    <p>Description: {classification.description}</p>
+                    </div>
+                ))}
             </div>
         </div>
         <div className={`tab-content ${activeTab === "graph" ? "is-active" : ""}`}>
@@ -121,6 +123,9 @@ export function DatabaseInfo() {
                 <EntityGraph />
             </div>
             )}
+        </div>
+        <div className={`tab-content ${activeTab === "edit" ? "is-active" : ""} pt-5`}>
+            <EntityForm />
         </div>
     </div>
     );

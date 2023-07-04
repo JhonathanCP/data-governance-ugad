@@ -22,7 +22,7 @@ export const getEntity = (id) => entitiesApi.get(`/entities/${id}/`);
 
 export const createEntity = (entity) => entitiesApi.post("/entities/", entity);
 
-export const updateEntity = (id, entity) => entitiesApi.put(`/entities/${id}/` , entity);
+export const updateEntity = (id, entity) => entitiesApi.patch(`/entities/${id}/` , entity);
 
 export const deleteEntity = (id) => entitiesApi.delete(`/entities/${id}/`);
 

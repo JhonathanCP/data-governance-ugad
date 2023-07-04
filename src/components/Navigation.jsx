@@ -19,11 +19,11 @@ export function Navigation() {
       <div className="navbar-start">
         
         <a className="navbar-item" href="/entities">
-          Entities
+          Entidades
         </a>
 
         <a className="navbar-item" href="/entitytypes">
-          Entity Types
+          Tipos de entidad
         </a>        
 
         {/* <div className="navbar-item has-dropdown is-hoverable">

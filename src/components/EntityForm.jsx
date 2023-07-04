@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { createEntity, deleteEntity, getEntity, updateEntity } from "../api/entities.api";
 import { toast } from "react-hot-toast";
 
-export function EntityFormPage() {
+export function EntityForm() {
   const {
     register,
     handleSubmit,
@@ -15,8 +15,16 @@ export function EntityFormPage() {
   const params = useParams();
 
   const onSubmit = handleSubmit(async (data) => {
+    const updatedData = {};
+    if (data.name) {
+      updatedData.name = data.name;
+    }
+    if (data.description) {
+      updatedData.description = data.description;
+    }
+
     if (params.id) {
-      await updateEntity(params.id, data);
+      await updateEntity(params.id, updatedData);
       toast.success("Entity updated", {
         position: "bottom-right",
         style: {
@@ -25,7 +33,7 @@ export function EntityFormPage() {
         },
       });
     } else {
-      await createEntity(data);
+      await createEntity(updatedData);
       toast.success("New Entity Added", {
         position: "bottom-right",
         style: {
@@ -44,41 +52,52 @@ export function EntityFormPage() {
         const { data } = await getEntity(params.id);
         setValue("name", data.name);
         setValue("description", data.description);
-        setValue("entityType", data.entityType);
       }
     }
     loadEntities();
   }, []);
 
   return (
-    <div className="max-w-xl mx-auto">
-      <form onSubmit={onSubmit} className="bg-zinc-800 p-10 rounded-lg mt-2">
-        <input
-          type="text"
-          placeholder="Name"
-          {...register("name", { required: true })}
-          className="bg-zinc-700 p-3 rounded-lg block w-full mb-3"
-          autoFocus
-        />
+    <div className="columns is-vcentered is-centered" >
+      <div className="column is-half">
+      <form onSubmit={onSubmit} >
+        <div className="field">
+          <label className="label">Name</label>
+          <div className="control">
+            <input
+              type="text"
+              placeholder="Name"
+              {...register("name")}
+              className={`input ${errors.name ? "is-danger" : ""}`}
+              autoFocus
+            />
+          </div>
+          {errors.name && <p className="help is-danger">This field is required</p>}
+        </div>
+        <div className="field">
+          <label className="label">Description</label>
+          <div className="control">
+            <textarea
+              placeholder="Description"
+              {...register("description")}
+              className={`textarea ${errors.description ? "is-danger" : ""}`}
+            />
+          </div>
+          {errors.description && <p className="help is-danger">This field is required</p>}
+        </div>
 
-        {errors.name && <span>This field is required</span>}
-        <textarea
-          placeholder="Description"
-          {...register("description", { required: true })}
-          className="bg-zinc-700 p-3 rounded-lg block w-full"
-        />
-
-        {errors.description && <span>This field is required</span>}
-
-        <button className="bg-indigo-500 p-3 rounded-lg block w-full mt-3">
-          Save
-        </button>
+        <div className="field is-grouped">
+          <div className="control">
+            <button className="button is-primary">Guardar</button>
+          </div>
+        </div>
       </form>
+      </div>
 
       {params.id && (
         <div className="flex justify-end">
           <button
-            className="bg-red-500 p-3 rounded-lg w-48 mt-3"
+            className="button is-danger mt-3"
             onClick={async () => {
               const accepted = window.confirm("Are you sure?");
               if (accepted) {
@@ -94,7 +113,7 @@ export function EntityFormPage() {
               }
             }}
           >
-            delete
+            Borrar
           </button>
         </div>
       )}

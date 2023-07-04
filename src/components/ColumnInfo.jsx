@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { getColumnInfo } from "../api/entities.api";
 import { FaDatabase, FaTable } from 'react-icons/fa';
 import EntityGraph from './EntityGraph'
+import { EntityForm } from "./EntityForm";
 
 export function ColumnInfo() {
   const [columnInfo, setColumnInfo] = useState(null);
@@ -21,17 +22,20 @@ export function ColumnInfo() {
     <div>
       <div className="tabs">
         <ul>
-          <li className={activeTab === "properties" ? "is-active" : ""}>
-            <a onClick={() => setActiveTab("properties")}>Properties</a>
+        <li className={activeTab === "properties" ? "is-active" : ""}>
+            <a onClick={() => setActiveTab("properties")}>Propiedades</a>
           </li>
           <li className={activeTab === "relationships" ? "is-active" : ""}>
-            <a onClick={() => setActiveTab("relationships")}>Relationships</a>
+            <a onClick={() => setActiveTab("relationships")}>Relaciones</a>
           </li>
           <li className={activeTab === "classifications" ? "is-active" : ""}>
-            <a onClick={() => setActiveTab("classifications")}>Classifications</a>
+            <a onClick={() => setActiveTab("classifications")}>Clasificaciones</a>
           </li>
           <li className={activeTab === "graph" ? "is-active" : ""}>
-            <a onClick={() => setActiveTab("graph")}>Graph</a>
+            <a onClick={() => setActiveTab("graph")}>Gráfico</a>
+          </li>
+          <li className={activeTab === "edit" ? "is-active" : ""}>
+            <a onClick={() => setActiveTab("edit")}>Editar</a>
           </li>
         </ul>
       </div>
@@ -45,6 +49,7 @@ export function ColumnInfo() {
           <p>Numeric Precision: {columnInfo && columnInfo.numeric_precision}</p>
           <p>Numeric Scale: {columnInfo && columnInfo.numeric_scale}</p>
           <p>Datetime Precision: {columnInfo && columnInfo.datetime_precision}</p>
+          <p>Descripción: {columnInfo && columnInfo.description}</p>
         </div>
       </div>
 
@@ -107,25 +112,27 @@ export function ColumnInfo() {
 
       <div className={`tab-content ${activeTab === "classifications" ? "is-active" : ""}`}>
         <div className="box">
-          <h2 className="title is-6">Classifications:</h2>
-          <div>
-            {columnInfo &&
-              columnInfo.classifications &&
-              columnInfo.classifications.map((classification) => (
-                <div key={classification.id}>
-                  <p>Name: {classification.name}</p>
-                  <p>Description: {classification.description}</p>
-                </div>
-              ))}
-          </div>
+        <h2 className="title is-6">Classifications:</h2>
+          {columnInfo &&
+            columnInfo.classifications &&
+            columnInfo.classifications.map((classification) => (
+              <div className="box" key={classification.id}>
+                <p>Name: {classification.name}</p>
+                <p>Description: {classification.description}</p>
+              </div>
+            ))}
         </div>
       </div>
+      
       <div className={`tab-content ${activeTab === "graph" ? "is-active" : ""}`}>
         {activeTab === "graph" && (
           <div style={{ position: "relative", top: 0, bottom: 0, left: 0, right: 0 }}>
             <EntityGraph />
           </div>
         )}
+      </div>
+      <div className={`tab-content ${activeTab === "edit" ? "is-active" : ""} pt-5`}>
+        <EntityForm />
       </div>
     </div>
   );

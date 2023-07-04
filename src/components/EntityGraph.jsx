@@ -2,14 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import cytoscape from "cytoscape";
 import CytoscapeComponent from "react-cytoscapejs";
 import { useParams } from "react-router-dom";
-import { getEntity } from "../api/entities.api";
+import { getEntity, getTableInfo, getColumnInfo } from "../api/entities.api";
 import { FaSearch } from 'react-icons/fa';
+import { NodeModal } from "./NodeModal";
 
 const EntityGraph = () => {
   const containerRef = useRef(null);
   let cy = null;
   const { id } = useParams();
   const [searchTerm, setSearchTerm] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [selectedNodeData, setSelectedNodeData] = useState(null);
+  const [modalData, setModalData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -112,6 +116,10 @@ const EntityGraph = () => {
             coolingFactor: 0.95,
             minTemp: 1.0,
           },
+          ready: (event) => {
+            const cy = event.cy;
+            cy.on("tap", "node", handleNodeClick);
+          },
         });
       } catch (error) {
         console.error("Error fetching entity:", error);
@@ -126,6 +134,35 @@ const EntityGraph = () => {
       }
     };
   }, [id, searchTerm]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (selectedNodeData) {
+        let res;
+
+        if (selectedNodeData.entityType === "Database") {
+          res = await getEntity(selectedNodeData.id);
+          setModalData(res.data);
+        } else if (selectedNodeData.entityType === "Table") {
+          res = await getTableInfo(selectedNodeData.id);
+          setModalData(res.data.entity);
+        } else if (selectedNodeData.entityType === "Column") {
+          res = await getColumnInfo(selectedNodeData.id);
+          setModalData(res.data);
+        }
+      }
+    };
+
+    fetchData();
+  }, [selectedNodeData]);
+
+  const handleNodeClick = (event) => {
+    const clickedNode = event.target;
+    const nodeData = clickedNode.data();
+
+    setSelectedNodeData(nodeData);
+    setShowModal(true);
+  };
 
   const getImageUrl = (ele) => {
     const id = ele.data("entityType");
@@ -156,6 +193,37 @@ const EntityGraph = () => {
       <div ref={containerRef} style={{ height: "70vh" }}>
         <CytoscapeComponent cy={cy} style={{ width: "100%", height: "100%" }} />
       </div>
+      {showModal && selectedNodeData && (
+        <NodeModal isOpen={showModal} onClose={() => setShowModal(false)}>
+          <header class="modal-card-head">
+            <p class="modal-card-title">Propiedades</p>
+            <button class="delete" aria-label="close"  onClick={() => setShowModal(false)}></button>
+          </header>
+          <section class="modal-card-body">
+          {selectedNodeData.entityType === "Column" && modalData &&(
+            <div>
+              <h2>Nombre: {modalData.name}</h2>
+              <p>Descripción: {modalData.description}</p>
+              <p>Tipo de entidad: {modalData.entityType}</p>
+              <p>Is Nullable: {modalData && modalData.is_nullable}</p>
+              <p>Data Type: {modalData && modalData.data_type}</p>
+              <p>Character Maximum Length: {modalData && modalData.character_maximum_length}</p>
+              <p>Numeric Precision: {modalData && modalData.numeric_precision}</p>
+              <p>Numeric Scale: {modalData && modalData.numeric_scale}</p>
+              <p>Datetime Precision: {modalData && modalData.datetime_precision}</p>
+            </div>
+          )}
+          {selectedNodeData.entityType !== "Column" && modalData &&(
+            <div>
+              {modalData.data_type && modalData.name}
+              <h2>Nombre: {modalData.name}</h2>
+              <p>Descripción: {modalData.description}</p>
+              <p>Tipo de entidad: {modalData.entityType}</p>
+            </div>
+          )}
+          </section>
+        </NodeModal>
+      )}
     </div>
   );
 };
