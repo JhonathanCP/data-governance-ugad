@@ -36,7 +36,7 @@ const EntityGraph = () => {
             ],
             edges: [
               ...entity.fathers.map((father) => ({
-                data: { source: entity.id, target: father.id },
+                data: { source: father.id, target: entity.id },
                 classes: "edge",
               })),
               ...entity.children.map((child) => ({
@@ -50,11 +50,12 @@ const EntityGraph = () => {
               selector: "node",
               style: {
                 label: "data(name)",
-                width: "80px",
-                height: "80px",
+                width: "30px",
+                height: "30px",
+                "font-size": "12px",
                 "background-fit": "cover",
                 "border-color": "#000",
-                "border-width": 3,
+                "border-width": 1,
                 "border-opacity": 0.5,
                 "background-image": (ele) => getImageUrl(ele),
                 display: (ele) => {
@@ -80,9 +81,9 @@ const EntityGraph = () => {
             {
               selector: "edge",
               style: {
-                "curve-style": "bezier",
-                width: 6,
-                "target-arrow-shape": "triangle",
+                "curve-style": "unbundled-bezier",
+                width: 2,
+                "target-arrow-shape": "diamond",
                 "line-color": "#2499ff",
                 "target-arrow-color": "#2499ff",
                 display: (ele) =>
@@ -96,16 +97,16 @@ const EntityGraph = () => {
           layout: {
             name: "cose",
             idealEdgeLength: 100,
-            nodeOverlap: 20,
+            nodeOverlap: 50,
             refresh: 20,
             fit: true,
             padding: 30,
             randomize: false,
-            componentSpacing: 100,
-            nodeRepulsion: 4000,
+            componentSpacing: 250,
+            nodeRepulsion: 5000,
             edgeElasticity: 100,
             nestingFactor: 5,
-            gravity: 80,
+            gravity: 40,
             numIter: 1000,
             initialTemp: 200,
             coolingFactor: 0.95,
@@ -116,7 +117,7 @@ const EntityGraph = () => {
         console.error("Error fetching entity:", error);
       }
     };
-
+    
     fetchData();
 
     return () => {

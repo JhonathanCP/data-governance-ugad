@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaTimes } from 'react-icons/fa';
 import { getEntityTypes } from '../api/entityTypes.api';
 import { getClassifications } from '../api/classifications.api';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -35,22 +35,22 @@ const Menu = ({ isVisible }) => {
         fetchClassifications();
     }, []);
 
-    const handleEntityTypeSelection = (entityType) => {
-        setSelectedEntityType(entityType === selectedEntityType ? '' : entityType);
+    const handleEntityTypeSelection = (entityTypeId) => {
+        setSelectedEntityType(entityTypeId === selectedEntityType ? '' : entityTypeId);
     };
 
-    const handleClassificationSelection = (classification) => {
-        setSelectedClassification(classification === selectedClassification ? '' : classification);
+    const handleClassificationSelection = (classificationId) => {
+        setSelectedClassification(classificationId === selectedClassification ? '' : classificationId);
     };
 
     const handleFilter = () => {
         // Construir la URL con los filtros seleccionados
         const queryParams = new URLSearchParams();
         if (selectedEntityType) {
-        queryParams.set('type', selectedEntityType.id);
+        queryParams.set('type', selectedEntityType);
         }
         if (selectedClassification) {
-        queryParams.set('classification', selectedClassification.id);
+        queryParams.set('classification', selectedClassification);
         }
         const search = queryParams.toString();
 
@@ -58,65 +58,76 @@ const Menu = ({ isVisible }) => {
         navigate(`/filtereditems?${search}`);
     };
 
+    const handleClear = () => {
+        setSelectedEntityType('');
+        setSelectedClassification('');
+    };
+
     return (
         <aside className={`menu ${isVisible ? 'is-active' : ''} mt-1`}>
-        <ul className="menu-list mt-5">
-            <li className="block mt-6">
-            <div className="dropdown is-hoverable is-centered">
-                <div className="dropdown-trigger">
-                <button className="button is-fullwidth" aria-haspopup="true" aria-controls="dropdown-entity-type">
-                    <span>{selectedEntityType ? selectedEntityType.name : 'Tipo de entidad'}</span>
-                    <span className="icon is-small">
-                    <FaSearch />
-                    </span>
-                </button>
-                </div>
-                <div className="dropdown-menu" id="dropdown-entity-type" role="menu">
-                <div className="dropdown-content">
+        <h1 className="title is-5 has-text-white mt-4">Filtrar entidades</h1>
+        <ul className="menu-list mt-2">
+            <li className="block">
+            <div className="field has-addons">
+                <div className="control is-expanded">
+                <div className="select is-fullwidth">
+                    <select
+                    value={selectedEntityType}
+                    onChange={(e) => handleEntityTypeSelection(e.target.value)}
+                    >
+                    <option value="">Buscar por tipo</option>
                     {entityTypes.map((entityType) => (
-                    <a
-                        key={entityType.id}
-                        href="#"
-                        className={`dropdown-item ${entityType === selectedEntityType ? 'is-active' : ''}`}
-                        onClick={() => handleEntityTypeSelection(entityType)}
-                    >
+                        <option key={entityType.id} value={entityType.id}>
                         {entityType.name}
-                    </a>
+                        </option>
                     ))}
+                    </select>
                 </div>
                 </div>
+                {selectedEntityType && (
+                <div className="control">
+                    <button className="button is-danger" onClick={() => setSelectedEntityType('')}>
+                    <FaTimes />
+                    </button>
+                </div>
+                )}
             </div>
             </li>
             <li className="block">
-            <div className="dropdown is-hoverable is-centered">
-                <div className="dropdown-trigger">
-                <button className="button" aria-haspopup="true" aria-controls="dropdown-classification">
-                    <span>{selectedClassification ? selectedClassification.name : 'Clasificaciones'}</span>
-                    <span className="icon is-small">
-                    <FaSearch />
-                    </span>
-                </button>
-                </div>
-                <div className="dropdown-menu" id="dropdown-classification" role="menu">
-                <div className="dropdown-content">
-                    {classifications.map((classification) => (
-                    <a
-                        key={classification.id}
-                        href="#"
-                        className={`dropdown-item ${classification === selectedClassification ? 'is-active' : ''}`}
-                        onClick={() => handleClassificationSelection(classification)}
+            <div className="field has-addons">
+                <div className="control is-expanded">
+                <div className="select is-fullwidth">
+                    <select
+                    value={selectedClassification}
+                    onChange={(e) => handleClassificationSelection(e.target.value)}
                     >
+                    <option value="">Buscar por clasificación</option>
+                    {classifications.map((classification) => (
+                        <option key={classification.id} value={classification.id}>
                         {classification.name}
-                    </a>
+                        </option>
                     ))}
+                    </select>
                 </div>
                 </div>
+                {selectedClassification && (
+                <div className="control">
+                    <button className="button is-danger" onClick={() => setSelectedClassification('')}>
+                    <FaTimes />
+                    </button>
+                </div>
+                )}
             </div>
             </li>
             <li className="block">
-            <button className="button is-centered" onClick={handleFilter}>
+            <div className="buttons">
+                <button className="button is-info" onClick={handleFilter}>
                 Filtrar
-            </button>
+                </button>
+                <button className="button is-danger" onClick={handleClear}>
+                Limpiar
+                </button>
+            </div>
             </li>
         </ul>
         </aside>

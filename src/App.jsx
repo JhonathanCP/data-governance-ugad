@@ -30,11 +30,11 @@ function App() {
         <Navigation />
         <div className="columns is-gapless">
           {menuVisible && (
-            <div className="column is-one-fifth has-background-link">
+            <div className="column is-2 has-background-link">
               <Menu />
             </div>
           )}
-          <div className={`column ${menuVisible ? 'is-four-fifths' : 'is-full'}`}>
+          <div className={`column ${menuVisible ? 'is-10' : 'is-full'}`}>
             <div className="columns is-vcentered is-gapless mr-5 mt-3">
               <div className="column is-1">
                 <span className="icon is-medium has-text-info" onClick={toggleMenu}>

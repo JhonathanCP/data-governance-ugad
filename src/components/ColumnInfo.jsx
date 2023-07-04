@@ -121,7 +121,11 @@ export function ColumnInfo() {
         </div>
       </div>
       <div className={`tab-content ${activeTab === "graph" ? "is-active" : ""}`}>
-        <EntityGraph />
+        {activeTab === "graph" && (
+          <div style={{ position: "relative", top: 0, bottom: 0, left: 0, right: 0 }}>
+            <EntityGraph />
+          </div>
+        )}
       </div>
     </div>
   );

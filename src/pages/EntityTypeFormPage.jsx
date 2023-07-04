@@ -15,8 +15,16 @@ export function EntityTypeFormPage() {
   const params = useParams();
 
   const onSubmit = handleSubmit(async (data) => {
+    const updatedData = {};
+    if (data.name) {
+      updatedData.name = data.name;
+    }
+    if (data.description) {
+      updatedData.description = data.description;
+    }
+
     if (params.id) {
-      await updateEntityType(params.id, data);
+      await updateEntityType(params.id, updatedData);
       toast.success("EntityType updated", {
         position: "bottom-right",
         style: {
@@ -25,7 +33,7 @@ export function EntityTypeFormPage() {
         },
       });
     } else {
-      await createEntityType(data);
+      await createEntityType(updatedData);
       toast.success("New Entity Type Added", {
         position: "bottom-right",
         style: {
@@ -59,7 +67,7 @@ export function EntityTypeFormPage() {
             <input
               type="text"
               placeholder="Name"
-              {...register("name", { required: true })}
+              {...register("name")}
               className={`input ${errors.name ? "is-danger" : ""}`}
               autoFocus
             />
@@ -71,7 +79,7 @@ export function EntityTypeFormPage() {
           <div className="control">
             <textarea
               placeholder="Description"
-              {...register("description", { required: true })}
+              {...register("description")}
               className={`textarea ${errors.description ? "is-danger" : ""}`}
             />
           </div>
@@ -80,7 +88,7 @@ export function EntityTypeFormPage() {
 
         <div className="field is-grouped">
           <div className="control">
-            <button className="button is-primary">Save</button>
+            <button className="button is-primary">Guardar</button>
           </div>
         </div>
       </form>
@@ -105,7 +113,7 @@ export function EntityTypeFormPage() {
               }
             }}
           >
-            Delete
+            Borrar
           </button>
         </div>
       )}
