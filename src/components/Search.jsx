@@ -40,23 +40,32 @@ export function Search() {
         }
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+        handleSearch();
+        }
+    };
+
     return (
         <div className="field has-addons">
-            <div className="control has-icons-left is-expanded">
+        <div className="control has-icons-left is-expanded">
             <input
-                className="input is-primary"
-                type="text"
-                placeholder="Buscar entidad..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+            className="input is-primary"
+            type="text"
+            placeholder="Buscar entidad..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleKeyDown} // Agregar el controlador de eventos onKeyDown
             />
             <span className="icon is-left">
-                <FaSearch />
+            <FaSearch />
             </span>
-            </div>
-            <div className="control">
-            <button className="button is-primary" onClick={handleSearch}>Buscar</button>
-            </div>
+        </div>
+        <div className="control">
+            <button className="button is-primary" onClick={handleSearch}>
+            Buscar
+            </button>
+        </div>
         </div>
     );
 }

@@ -3,12 +3,13 @@ import cytoscape from "cytoscape";
 import CytoscapeComponent from "react-cytoscapejs";
 import { useParams } from "react-router-dom";
 import { getEntity, getTableInfo, getColumnInfo } from "../api/entities.api";
+import { getProcess } from "../api/processes.api";
 import { FaSearch } from 'react-icons/fa';
 import { NodeModal } from "./NodeModal";
 import { Link } from "react-router-dom";
 import { FaSpinner } from 'react-icons/fa';
 
-const EntityGraph = () => {
+const LineageGraph = () => {
   const containerRef = useRef(null);
   let cy = null;
   const { id } = useParams();
@@ -23,44 +24,42 @@ const EntityGraph = () => {
       try {
         const response = await getEntity(id);
         const entity = response.data;
-        const parents = []
-        const children = []
-        for (const id in entity.fathers) {
-          const parentResponse = await getEntity(entity.fathers[id].id);
-          parents.push(parentResponse.data);
-        }
-        for (const id in entity.children) {
-          const childResponse = await getEntity(entity.children[id].id);
-          children.push(childResponse.data);
+        const processes = []
+        for (const id in entity.processes) {
+          const processResponse = await getProcess(entity.processes[id].id);
+          processes.push(processResponse.data);
         }
         console.log("completed")
-        if (containerRef.current) {
         cy = cytoscape({
           container: containerRef.current,
           elements: {
             nodes: [
-              ...parents.map((father) => ({
-                data: { id: father.id, name: father.name, entityType: father.entityType },
-                classes: father.entityType.toLowerCase(),
-              })),
-              {
-                data: { id: entity.id, name: entity.name, entityType: entity.entityType },
-                classes: entity.entityType.toLowerCase(),
-              },
-              ...children.map((child) => ({
-                data: { id: child.id, name: child.name, entityType: child.entityType },
-                classes: child.entityType.toLowerCase(),
-              })),
+              ...processes.flatMap((process) => [
+                ...process.entryTables.map((table) => ({
+                  data: { id: table.id, name: table.name, entityType: table.entityType },
+                  classes: table.entityType.toLowerCase(),
+                })),
+                {
+                  data: { id: process.id, name: process.name, entityType: "Process" },
+                  classes: process.description.toLowerCase(),
+                },
+                ...process.outputTables.map((table) => ({
+                  data: { id: table.id, name: table.name, entityType: table.entityType },
+                  classes: table.entityType.toLowerCase(),
+                })),
+              ]),
             ],
             edges: [
-              ...parents.map((father) => ({
-                data: { source: father.id, target: entity.id },
-                classes: "edge",
-              })),
-              ...children.map((child) => ({
-                data: { source: entity.id, target: child.id },
-                classes: "edge",
-              })),
+              ...processes.flatMap((process) => [
+                ...process.entryTables.map((table) => ({
+                  data: { source: table.id, target: process.id },
+                  classes: "edge",
+                })),
+                ...process.outputTables.map((table) => ({
+                  data: { source: process.id, target: table.id },
+                  classes: "edge",
+                })),
+              ]),
             ],
           },
           style: [
@@ -68,8 +67,8 @@ const EntityGraph = () => {
               selector: "node",
               style: {
                 label: "data(name)",
-                width: "25px",
-                height: "25px",
+                width: "30px",
+                height: "30px",
                 "font-size": "12px",
                 "background-fit": "cover",
                 "border-color": "#000",
@@ -99,9 +98,9 @@ const EntityGraph = () => {
             {
               selector: "edge",
               style: {
-                "curve-style": "unbundled-bezier",
-                width: 1.5,
-                "target-arrow-shape": "diamond",
+                "curve-style": "bezier",
+                width: 2,
+                "target-arrow-shape": "triangle",
                 "line-color": "#2499ff",
                 "target-arrow-color": "#2499ff",
                 display: (ele) =>
@@ -113,22 +112,15 @@ const EntityGraph = () => {
             },
           ],
           layout: {
-            name: "cose",
-            idealEdgeLength: 100,
-            nodeOverlap: 50,
-            refresh: 20,
-            fit: true,
-            padding: 30,
-            randomize: false,
-            componentSpacing: 250,
-            nodeRepulsion: 5000,
-            edgeElasticity: 100,
-            nestingFactor: 5,
-            gravity: 40,
-            numIter: 1000,
-            initialTemp: 200,
-            coolingFactor: 0.95,
-            minTemp: 1.0,
+            name: "concentric",
+            concentric: function(node) {
+              return node.degree(); // Organiza los nodos según su grado (número de conexiones)
+            },
+            levelWidth: function() {
+              return 2; // Establece el nivel de separación entre los círculos concéntricos
+            },
+            padding: 50,
+            spacingFactor: 2 // Espacio de relleno alrededor de los nodos
           },
           ready: (event) => {
             const cy = event.cy;
@@ -136,7 +128,6 @@ const EntityGraph = () => {
           },
         })
         setIsLoading(false);
-        };
       } catch (error) {
         console.error("Error fetching entity:", error);
         setIsLoading(false);
@@ -166,6 +157,9 @@ const EntityGraph = () => {
         } else if (selectedNodeData.entityType === "Column") {
           res = await getColumnInfo(selectedNodeData.id);
           setModalData(res.data);
+        } else if (selectedNodeData.entityType === "Process") {
+          res = await getProcess(selectedNodeData.id);
+          setModalData(res.data);
         }
       }
     };
@@ -189,6 +183,8 @@ const EntityGraph = () => {
       return "https://live.staticflickr.com/65535/52993557582_de65f059b9_m.jpg";
     } else if (id === "Column") {
       return "https://live.staticflickr.com/65535/52994300404_18cb607eff_m.jpg";
+    }else if (id === "Process") {
+      return "https://live.staticflickr.com/65535/53027450430_4c4618c093_m.jpg";
     }
     return null;
   };
@@ -223,85 +219,88 @@ const EntityGraph = () => {
             <button className="delete" aria-label="close"  onClick={() => setShowModal(false)}></button>
           </header>
           <section className="modal-card-body">
-          {selectedNodeData.entityType === "Column" && modalData &&(
+          {selectedNodeData.entityType === "Process" && modalData && modalData.entryTables && modalData.outputTables && (
             <div>
+              {modalData.data_type && modalData.name && modalData.entryTables && modalData.outputTables}
               <h2>Nombre: {modalData.name}</h2>
               <p>Descripción: {modalData.description}</p>
-              <p>Tipo de entidad: {modalData.entityType}</p>
-              <p>Is Nullable: {modalData && modalData.is_nullable}</p>
-              <p>Data Type: {modalData && modalData.data_type}</p>
-              <p>Character Maximum Length: {modalData && modalData.character_maximum_length}</p>
-              <p>Numeric Precision: {modalData && modalData.numeric_precision}</p>
-              <p>Numeric Scale: {modalData && modalData.numeric_scale}</p>
-              <p>Datetime Precision: {modalData && modalData.datetime_precision}</p>
-              <p>Padres:</p>
+              <p>Tablas de entrada:</p>
               <ul>
                 <li>
-                {modalData.fathers.map((father) => (
-                  <Link
-                  key={father.id}
-                  className="tag is-link is-light"
-                  to={(() => {
-                    switch (father.entityType) {
+                {modalData.data_type && modalData.name}
+                {modalData && modalData.entryTables.map((table) => (
+                  <Link key={table.id} className="tag is-link is-light" to={(() => {
+                    switch (table.entityType) {
                       case 'Database':
-                        return `/database-info/${father.id}`;
+                        return `/database-info/${table.id}`;
                       case 'Table':
-                        return `/table-info/${father.id}`;
+                        return `/table-info/${table.id}`;
                       case 'Column':
-                        return `/column-info/${father.id}`;
+                        return `/column-info/${table.id}`;
                       default:
                         break;
                     }
-                  })()}
-                >
-                  {father.name}
-                </Link>
+                  })()}>{table.name}</Link>
                 ))}
                 </li>
               </ul>
-              <p>Clasificaciones:</p>                
-                {modalData.classifications.map((classification, index) => (
-                  <span className="tag is-primary is-light" key={index}>{classification.name}</span>
-                ))}
-            </div>
-          )}
-          {selectedNodeData.entityType !== "Column" && modalData &&(
-            <div>
-              {modalData.data_type && modalData.name}
-              <h2>Nombre: {modalData.name}</h2>
-              <p>Descripción: {modalData.description}</p>
-              <p>Tipo de entidad: {modalData.entityType}</p>
-              <p>Padres:</p>
+              <p>Tablas de salida:</p>
               <ul>
                 <li>
-                {modalData.fathers.map((father) => (
-                  <Link
-                  key={father.id}
-                  className="tag is-link is-light"
-                  to={(() => {
-                    switch (father.entityType) {
+                {modalData.data_type && modalData.name}
+                {modalData && modalData.outputTables.map((table) => (
+                  <Link key={table.id} className="tag is-link is-light" to={(() => {
+                    switch (table.entityType) {
                       case 'Database':
-                        return `/database-info/${father.id}`;
+                        return `/database-info/${table.id}`;
                       case 'Table':
-                        return `/table-info/${father.id}`;
+                        return `/table-info/${table.id}`;
                       case 'Column':
-                        return `/column-info/${father.id}`;
+                        return `/column-info/${table.id}`;
                       default:
                         break;
                     }
-                  })()}
-                >
-                  {father.name}
-                </Link>
+                  })()}>{table.name}</Link>
                 ))}
                 </li>
               </ul>
-              <p>Clasificaciones:</p>
-                {modalData.classifications.map((classification, index) => (
-                  <span className="tag is-primary is-light" key={index}>{classification.name}</span>
-                ))}
             </div>
           )}
+          {selectedNodeData.entityType !== "Process" && modalData && modalData.entityType &&(
+              <div>
+                {modalData.data_type && modalData.name}
+                <h2>Nombre: {modalData.name}</h2>
+                <p>Descripción: {modalData.description}</p>
+                <p>Tipo de entidad: {modalData.entityType}</p>
+                <p>Padres:</p>
+                <ul>
+                  <li>
+                  {modalData.fathers.map((father) => (
+                    <Link key={father.id} className="tag is-link is-light" to={(() => {
+                      switch (father.entityType) {
+                        case 'Database':
+                          return `/database-info/${father.id}`;
+                        case 'Table':
+                          return `/table-info/${father.id}`;
+                        case 'Column':
+                          return `/column-info/${father.id}`;
+                        default:
+                          break;
+                      }
+                    })()}>{father.name}</Link>
+                  ))}
+                  </li>
+                </ul>
+                <p>Clasificaciones:</p>
+                <ul>
+                  <li>
+                  {modalData.classifications.map((classification) => (
+                    <span className="tag is-primary is-light">{classification.name}</span>
+                  ))}
+                  </li>
+                </ul>
+              </div>
+            )}
           </section>
         </NodeModal>
       )}
@@ -309,4 +308,4 @@ const EntityGraph = () => {
   );
 };
 
-export default EntityGraph;
+export default LineageGraph;

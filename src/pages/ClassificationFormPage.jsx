@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { createEntityType, deleteEntityType, getEntityType, updateEntityType } from "../api/entityTypes.api";
+import { createClassification, deleteClassification, getClassification, updateClassification } from "../api/classifications.api";
 import { toast } from "react-hot-toast";
 
-export function EntityTypeFormPage() {
+export function ClassificationFormPage() {
   const {
     register,
     handleSubmit,
@@ -24,8 +24,8 @@ export function EntityTypeFormPage() {
     }
 
     if (params.id) {
-      await updateEntityType(params.id, updatedData);
-      toast.success("EntityType updated", {
+      await updateClassification(params.id, updatedData);
+      toast.success("Classification updated", {
         position: "bottom-right",
         style: {
           background: "#101010",
@@ -33,8 +33,8 @@ export function EntityTypeFormPage() {
         },
       });
     } else {
-      await createEntityType(updatedData);
-      toast.success("New Entity Type Added", {
+      await createClassification(updatedData);
+      toast.success("New Classification Added", {
         position: "bottom-right",
         style: {
           background: "#101010",
@@ -43,18 +43,18 @@ export function EntityTypeFormPage() {
       });
     }
 
-    navigate("/entitytypes");
+    navigate("/classifications");
   });
 
   useEffect(() => {
-    async function loadEntityTypes() {
+    async function loadClassifications() {
       if (params.id) {
-        const { data } = await getEntityType(params.id);
+        const { data } = await getClassification(params.id);
         setValue("name", data.name);
         setValue("description", data.description);
       }
     }
-    loadEntityTypes();
+    loadClassifications();
   }, []);
 
   return (
@@ -62,7 +62,7 @@ export function EntityTypeFormPage() {
       <div className="column is-half">
       <form onSubmit={onSubmit} >
         <div className="field">
-          <label className="label">Name</label>
+          <label className="label">Nombre</label>
           <div className="control">
             <input
               type="text"
@@ -75,7 +75,7 @@ export function EntityTypeFormPage() {
           {errors.name && <p className="help is-danger">This field is required</p>}
         </div>
         <div className="field">
-          <label className="label">Description</label>
+          <label className="label">Descripción</label>
           <div className="control">
             <textarea
               placeholder="Description"
@@ -95,7 +95,7 @@ export function EntityTypeFormPage() {
                   onClick={async () => {
                     const accepted = window.confirm("Are you sure?");
                     if (accepted) {
-                      await deleteEntityType(params.id);
+                      await deleteClassification(params.id);
                       toast.success("Process Removed", {
                         position: "bottom-right",
                         style: {
@@ -103,7 +103,7 @@ export function EntityTypeFormPage() {
                           color: "#fff",
                         },
                       });
-                      navigate("/entitytypes");
+                      navigate("/classifications");
                     }
                   }}
                 >

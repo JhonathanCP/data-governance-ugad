@@ -64,15 +64,6 @@ export function FilteredEntities({ selectedEntityType, selectedClassification })
                             <EntityRow key={entity.id} entity={entity} />
                         ))}
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Tipo</th>
-                            <th>Clasificaciones</th>
-                            <th>Padres</th>
-                        </tr>
-                    </tfoot>
             </table>
         )}
         </div>

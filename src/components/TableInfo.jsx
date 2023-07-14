@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { getTableInfo } from "../api/entities.api";
 import { FaDatabase, FaTable, FaRulerVertical } from 'react-icons/fa'
 import EntityGraph from './EntityGraph'
+import LineageGraph from './LineageGraph'
 import { EntityForm } from "./EntityForm";
 
 export function TableInfo() {
@@ -30,15 +31,18 @@ export function TableInfo() {
           <li className={activeTab === "relationships" ? "is-active" : ""}>
             <a onClick={() => setActiveTab("relationships")}>Relaciones</a>
           </li>
-          <li className={activeTab === "classifications" ? "is-active" : ""}>
-            <a onClick={() => setActiveTab("classifications")}>Clasificaciones</a>
-          </li>
-          <li className={activeTab === "sampleData" ? "is-active" : ""}>
-            <a onClick={() => setActiveTab("sampleData")}>Sample Data</a>
-          </li>
           <li className={activeTab === "graph" ? "is-active" : ""}>
             <a onClick={() => setActiveTab("graph")}>Gráfico</a>
           </li>
+          <li className={activeTab === "classifications" ? "is-active" : ""}>
+            <a onClick={() => setActiveTab("classifications")}>Clasificaciones</a>
+          </li>
+          <li className={activeTab === "lineage" ? "is-active" : ""}>
+            <a onClick={() => setActiveTab("lineage")}>Linaje</a>
+          </li>
+          <li className={activeTab === "sampleData" ? "is-active" : ""}>
+            <a onClick={() => setActiveTab("sampleData")}>Data de ejemplo</a>
+          </li>          
           <li className={activeTab === "edit" ? "is-active" : ""}>
             <a onClick={() => setActiveTab("edit")}>Editar</a>
           </li>
@@ -47,22 +51,22 @@ export function TableInfo() {
 
       <div className={`tab-content ${activeTab === "properties" ? "is-active" : ""}`}>
         <div className="box">
-          <h2 className="title is-6">{entityInfo.name}</h2>
-          <p>Description: {entityInfo.description}</p>
-          <p>Entity Type: {entityInfo.entityType}</p>
+          <h2 className="title is-6"><span className="icon has-text-link"><FaTable /></span>{entityInfo.name}</h2>
+          <p>Descripción: {entityInfo.description}</p>
+          <p>Tipo de entidad: {entityInfo.entityType}</p>
         </div>
       </div>
 
       <div className={`tab-content ${activeTab === "relationships" ? "is-active" : ""}`}>
       <div className="box">
-          <h2 className="title is-6">Parents:</h2>
+          <h2 className="title is-6">Padres:</h2>
           <div className="table-container">
             <table className="table is-fullwidth is-narrow is-striped is-hoverable">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Entity Type</th>
-                  <th>Description</th>
+                  <th>Nombre</th>
+                  <th>Tipo de entidad</th>
+                  <th>Descripción</th>
                 </tr>
               </thead>
               <tbody>
@@ -75,9 +79,9 @@ export function TableInfo() {
                             {(() => {
                               switch (father.entityType) {
                                 case 'Database':
-                                  return <span className="icon is-medium has-text-link"><FaDatabase /></span>;
+                                  return <span className="icon has-text-link"><FaDatabase /></span>;
                                 case 'Table':
-                                  return <span className="icon is-medium has-text-link"><FaTable /></span>;
+                                  return <span className="icon has-text-link"><FaTable /></span>;
                                 default:
                                   return null;
                               }
@@ -108,7 +112,7 @@ export function TableInfo() {
           </div>
         </div>
         <div className="box">
-          <h2 className="title is-6">Children:</h2>
+          <h2 className="title is-6">Hijos:</h2>
           <div className="table-container">
             <table className="table is-fullwidth is-narrow is-striped is-hoverable">
               <thead>
@@ -132,11 +136,11 @@ export function TableInfo() {
                             {(() => {
                               switch (column.column_entityType) {
                                 case 'Database':
-                                  return <span className="icon is-medium has-text-link"><FaDatabase /></span>;
+                                  return <span className="icon has-text-link"><FaDatabase /></span>;
                                 case 'Table':
-                                  return <span className="icon is-medium has-text-link"><FaTable /></span>;
+                                  return <span className="icon has-text-link"><FaTable /></span>;
                                 case 'Column':
-                                  return <span className="icon is-medium has-text-link"><FaRulerVertical /></span>;
+                                  return <span className="icon has-text-link"><FaRulerVertical /></span>;
                                 default:
                                   return null;
                               }
@@ -187,7 +191,7 @@ export function TableInfo() {
 
       <div className={`tab-content ${activeTab === "sampleData" ? "is-active" : ""}`}>
         <div className="table-container">
-          <table className="table is-fullwidth  is-striped is-hoverable">
+          <table className="table is-fullwidth is-striped is-hoverable">
             <thead>
               <tr>
                 {tableInfo.data_sample &&
@@ -203,7 +207,7 @@ export function TableInfo() {
                   <tr key={index}>
                     {Object.values(row).map((value, idx) => (
                       <td key={idx} style={{ whiteSpace: "nowrap" }}>
-                        <div className="is-clipped" style={{ maxWidth: "200px" }}>
+                        <div className="is-clipped" style={{ maxWidth: "400px" }}>
                           <p>{value}</p>
                         </div>
                       </td>
@@ -218,6 +222,13 @@ export function TableInfo() {
         {activeTab === "graph" && (
           <div style={{ position: "relative", top: 0, bottom: 0, left: 0, right: 0 }}>
             <EntityGraph />
+          </div>
+        )}
+      </div>
+      <div className={`tab-content ${activeTab === "lineage" ? "is-active" : ""}`}>
+        {activeTab === "lineage" && (
+          <div style={{ position: "relative", top: 0, bottom: 0, left: 0, right: 0 }}>
+            <LineageGraph />
           </div>
         )}
       </div>

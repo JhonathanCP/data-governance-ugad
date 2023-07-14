@@ -42,21 +42,22 @@ export function DatabaseInfo() {
 
         <div className={`tab-content ${activeTab === "properties" ? "is-active" : ""}`}>
             <div className="box">
-            <h2 className="title is-6">{databaseInfo && databaseInfo.name}</h2>
-            <p>Description: {databaseInfo && databaseInfo.description}</p>
+            <h2 className="title is-6"><span className="icon has-text-link"><FaDatabase /></span>{databaseInfo && databaseInfo.name}</h2>
+            <p>Tipo de entidad: {databaseInfo && databaseInfo.entityType}</p>
+            <p>Descripción: {databaseInfo && databaseInfo.description}</p>
             </div>
         </div>
 
         <div className={`tab-content ${activeTab === "relationships" ? "is-active" : ""}`}>
             <div className="box">
-            <h2 className="title is-6">Children:</h2>
+            <h2 className="title is-6">Hijos:</h2>
                 <div className="table-container">
                     <table className="table is-fullwidth is-narrow is-striped is-hoverable">
                     <thead>
                         <tr>
-                        <th>Name</th>
-                        <th>Entity Type</th>
-                        <th>Description</th>
+                        <th>Nombre</th>
+                        <th>Tipo de entidad</th>
+                        <th>Descripción</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,9 +71,9 @@ export function DatabaseInfo() {
                                     {(() => {
                                     switch (child.entityType) {
                                         case 'Database':
-                                        return <span className="icon is-medium has-text-link"><FaDatabase /></span>;
+                                        return <span className="icon has-text-link"><FaDatabase /></span>;
                                         case 'Table':
-                                        return <span className="icon is-medium has-text-link"><FaTable /></span>;
+                                        return <span className="icon has-text-link"><FaTable /></span>;
                                         default:
                                         return null;
                                     }
@@ -106,13 +107,13 @@ export function DatabaseInfo() {
 
         <div className={`tab-content ${activeTab === "classifications" ? "is-active" : ""}`}>
             <div className="box">
-            <h2 className="title is-6">Classifications:</h2>
+            <h2 className="title is-6">Clasificaciones:</h2>
                 {databaseInfo &&
                 databaseInfo.classifications &&
                 databaseInfo.classifications.map((classification) => (
                     <div className="box" key={classification.id}>
-                    <p>Name: {classification.name}</p>
-                    <p>Description: {classification.description}</p>
+                    <p>Nombre: {classification.name}</p>
+                    <p>Descripción: {classification.description}</p>
                     </div>
                 ))}
             </div>

@@ -5,7 +5,7 @@ export function Navigation() {
   <nav className="navbar pl-5 pr-5 is-link" role="navigation" aria-label="main navigation">
     <div className="navbar-brand">
       <a className="navbar-item" href="/">
-        <img src="../public/LogoUGAD.png" width="112" height="28"></img>
+        <img src="../public/LogoUGAD.png" className="is-responsive"></img>
       </a>
 
       <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -24,7 +24,15 @@ export function Navigation() {
 
         <a className="navbar-item" href="/entitytypes">
           Tipos de entidad
-        </a>        
+        </a>
+
+        <a className="navbar-item" href="/classifications">
+          Clasificaciones
+        </a>
+
+        <a className="navbar-item" href="/processes">
+          Procesos
+        </a>
 
         {/* <div className="navbar-item has-dropdown is-hoverable">
           <a className="navbar-link">

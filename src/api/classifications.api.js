@@ -14,8 +14,8 @@ export const getClassifications = () => classificationsApi.get("/");
 
 export const getClassification = (id) => classificationsApi.get(`/${id}/`);
 
-export const createlassification = (classification) => classificationsApi.post("/", classification);
+export const createClassification = (classification) => classificationsApi.post("/", classification);
 
-export const updatelassification = (id, classification) => classificationsApi.put(`/${id}/` , classification);
+export const updateClassification = (id, classification) => classificationsApi.patch(`/${id}/` , classification);
 
-export const deletelassification = (id) => classificationsApi.delete(`/${id}/`);
+export const deleteClassification = (id) => classificationsApi.delete(`/${id}/`);

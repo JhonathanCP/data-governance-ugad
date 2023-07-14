@@ -3,13 +3,18 @@ import React, { useState } from 'react';
 import { Navigation } from "./components/Navigation";
 import  Menu  from "./components/Menu";
 import  { Search }  from "./components/Search";
+import { EntityFormPage } from "./pages/EntityFormPage";
 import { EntityTypeFormPage } from "./pages/EntityTypeFormPage";
+import { ClassificationFormPage } from "./pages/ClassificationFormPage";
+import { ProcessFormPage } from "./pages/ProcessFormPage";
 import { EntityTypePage } from "./pages/EntityTypePage";
 import { EntityPage } from "./pages/EntityPage";
+import { ProcessPage } from "./pages/ProcessPage";
 import { ColumnPage } from "./pages/ColumnPage";
 import { TablePage } from "./pages/TablePage";
 import { DatabasePage } from "./pages/DatabasePage";
 import { FilteredEntitiesPage } from "./pages/FilteredEntitiesPage";
+import { ClassificationsPage } from "./pages/ClassificationsPage";
 import { Toaster } from "react-hot-toast";
 import 'bulma/css/bulma.min.css'; 
 import './App.css'
@@ -52,10 +57,17 @@ function App() {
                 <Route path="/entitytypes/:id" element={<EntityTypeFormPage />} />
                 <Route path="/entitytypes-create" element={<EntityTypeFormPage />} />
                 <Route path="/entities" element={<EntityPage />} />
+                <Route path="/entities/:id" element={<EntityFormPage />} />
                 <Route path="/database-info/:id" element={<DatabasePage />} />
                 <Route path="/column-info/:id" element={<ColumnPage />} />
                 <Route path="/table-info/:id" element={<TablePage />} />
                 <Route path="/filtereditems" element={<FilteredEntitiesPage />} />
+                <Route path="/classifications" element={<ClassificationsPage />} />
+                <Route path="/classifications/:id" element={<ClassificationFormPage />} />
+                <Route path="/classifications-create" element={<ClassificationFormPage />} />
+                <Route path="/processes" element={<ProcessPage />} />
+                <Route path="/processes/:id" element={<ProcessFormPage />} />
+                <Route path="/processes-create" element={<ProcessFormPage />} />
               </Routes>
             </div>
           </div>

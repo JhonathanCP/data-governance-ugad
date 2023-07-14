@@ -37,6 +37,7 @@ export function EntitiesList() {
               <th>Tipo</th>
               <th>Clasificaciones</th>
               <th>Padres</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>

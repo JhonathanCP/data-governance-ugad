@@ -29,3 +29,7 @@ export const deleteEntity = (id) => entitiesApi.delete(`/entities/${id}/`);
 export const getTableInfo = (id) => entitiesApi.get(`/table-info/${id}/`);
 
 export const getColumnInfo = (id) => entitiesApi.get(`/column-info/${id}/`);
+
+export const addClassification = (id, classification) => entitiesApi.patch(`/add-classification/${id}/`, classification);
+
+export const removeClassification = (id, classification) => entitiesApi.patch(`/remove-classification/${id}/`, classification);

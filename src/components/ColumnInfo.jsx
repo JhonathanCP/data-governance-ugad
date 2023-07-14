@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getColumnInfo } from "../api/entities.api";
-import { FaDatabase, FaTable } from 'react-icons/fa';
+import { FaDatabase, FaTable, FaRulerVertical } from 'react-icons/fa';
 import EntityGraph from './EntityGraph'
 import { EntityForm } from "./EntityForm";
 
@@ -42,7 +42,7 @@ export function ColumnInfo() {
 
       <div className={`tab-content ${activeTab === "properties" ? "is-active" : ""}`}>
         <div className="box">
-          <h2 className="title is-6">{columnInfo && columnInfo.column_name}</h2>
+          <h2 className="title is-6"><span className="icon has-text-link"><FaRulerVertical /></span>{columnInfo && columnInfo.column_name}</h2>
           <p>Is Nullable: {columnInfo && columnInfo.is_nullable}</p>
           <p>Data Type: {columnInfo && columnInfo.data_type}</p>
           <p>Character Maximum Length: {columnInfo && columnInfo.character_maximum_length}</p>
@@ -55,14 +55,14 @@ export function ColumnInfo() {
 
       <div className={`tab-content ${activeTab === "relationships" ? "is-active" : ""}`}>
         <div className="box">
-          <h2 className="title is-6">Parents:</h2>
+          <h2 className="title is-6">Padres:</h2>
           <div className="table-container">
             <table className="table is-fullwidth is-narrow is-striped is-hoverable">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Entity Type</th>
-                  <th>Description</th>
+                  <th>Nombre</th>
+                  <th>Tipo de entidad</th>
+                  <th>Descripción</th>
                 </tr>
               </thead>
               <tbody>
@@ -76,9 +76,9 @@ export function ColumnInfo() {
                             {(() => {
                               switch (father.entityType) {
                                 case 'Database':
-                                  return <span className="icon is-medium has-text-link"><FaDatabase /></span>;
+                                  return <span className="icon has-text-link"><FaDatabase /></span>;
                                 case 'Table':
-                                  return <span className="icon is-medium has-text-link"><FaTable /></span>;
+                                  return <span className="icon has-text-link"><FaTable /></span>;
                                 default:
                                   return null;
                               }
@@ -112,18 +112,18 @@ export function ColumnInfo() {
 
       <div className={`tab-content ${activeTab === "classifications" ? "is-active" : ""}`}>
         <div className="box">
-        <h2 className="title is-6">Classifications:</h2>
+        <h2 className="title is-6">Clasificaciones:</h2>
           {columnInfo &&
             columnInfo.classifications &&
             columnInfo.classifications.map((classification) => (
               <div className="box" key={classification.id}>
-                <p>Name: {classification.name}</p>
-                <p>Description: {classification.description}</p>
+                <p>Nombre: {classification.name}</p>
+                <p>Descripción: {classification.description}</p>
               </div>
             ))}
         </div>
       </div>
-      
+
       <div className={`tab-content ${activeTab === "graph" ? "is-active" : ""}`}>
         {activeTab === "graph" && (
           <div style={{ position: "relative", top: 0, bottom: 0, left: 0, right: 0 }}>
